@@ -2,16 +2,12 @@ int_libs = # Interface dependencies.
 imp_libs = # Implementation dependencies.
 #import imp_libs += libhello%lib{hello}
 
-inc = [dir_path] ../../include/libfoo/
-
-lib{foo}: {hxx ixx txx cxx}{**  -config} hxx{config}       \
-     $inc/{hxx ixx txx    }{** -version} $inc/hxx{version} \
-          $imp_libs $int_libs
-
 # Public headers.
 #
-$inc/
+$out_root/include/libfoo/
 {
+  $out_root/src/libfoo/lib{foo}: {hxx ixx txx}{** -version} hxx{version}
+
   # Include the generated version header into the distribution (so that we
   # don't pick up an installed one) and don't remove it when cleaning (so that
   # clean results in a state identical to distributed).
@@ -31,6 +27,11 @@ $inc/
     install.subdirs = true
   }
 }
+
+# Private headers and sources.
+#
+lib{foo}: {hxx ixx txx cxx}{** -config} hxx{config} \
+          $imp_libs $int_libs
 
 hxx{config}: in{config}
 {
