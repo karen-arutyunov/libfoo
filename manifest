@@ -1,0 +1,11 @@
+: 1
+name: libfoo
+version: 0.1.0-a.0.z
+summary: foo C++ library
+license: other: proprietary ; Not free/open source.
+description-file: README.md
+url: https://example.org/libfoo
+email: karen@codesynthesis.com
+depends: * build2 >= 0.12.0
+depends: * bpkg >= 0.12.0
+#depends: libhello ^1.0.0
