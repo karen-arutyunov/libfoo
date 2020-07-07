@@ -40,8 +40,13 @@ hxx{config}: in{config}
 
 # Build options.
 #
-cxx.poptions =+ "-I($out_root/src)"     "-I($src_root/src)"     \
-                "-I($out_root/include)" "-I($src_root/include)"
+out_inc = [dir_path] $out_root/include/
+src_inc = [dir_path] $src_root/include/
+out_src = [dir_path] $out_root/src/
+src_src = [dir_path] $src_root/src/
+
+cxx.poptions =+ "-I$out_src" "-I$src_src" \
+                "-I$out_inc" "-I$src_inc"
 
 obja{*}: cxx.poptions += -DLIBFOO_STATIC_BUILD
 objs{*}: cxx.poptions += -DLIBFOO_SHARED_BUILD
@@ -50,7 +55,7 @@ objs{*}: cxx.poptions += -DLIBFOO_SHARED_BUILD
 #
 lib{foo}:
 {
-  cxx.export.poptions = "-I($out_root/include)" "-I($src_root/include)"
+  cxx.export.poptions = "-I$out_inc" "-I$src_inc"
   cxx.export.libs = $int_libs
 }
 
