@@ -2,19 +2,15 @@ int_libs = # Interface dependencies.
 imp_libs = # Implementation dependencies.
 #import imp_libs += libhello%lib{hello}
 
-# @@ Add pub_hdrs variable to break the complexity?
-# @@ Combine the lib{foo} declaration:
-#
-#lib{foo}: {hxx ixx txx cxx}{** -config} hxx{config} \
-#          $pub/{$($pub/pub_hdrs)} $imp_libs $int_libs
-
 # Public headers.
 #
 pub = [dir_path] ../../include/libfoo/
 
 include $pub
 
-lib{foo}: $pub/{$($pub/pub_hdrs)}
+pub_hdrs = $($pub/pub_hdrs)
+
+lib{foo}: $pub/{$pub_hdrs}
 
 # Private headers and sources as well as dependencies.
 #
