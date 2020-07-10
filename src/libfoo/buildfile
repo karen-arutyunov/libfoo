@@ -2,36 +2,23 @@ int_libs = # Interface dependencies.
 imp_libs = # Implementation dependencies.
 #import imp_libs += libhello%lib{hello}
 
+# @@ Add pub_hdrs variable to break the complexity?
+# @@ Combine the lib{foo} declaration:
+#
+#lib{foo}: {hxx ixx txx cxx}{** -config} hxx{config} \
+#          $pub/{$($pub/pub_hdrs)} $imp_libs $int_libs
+
 # Public headers.
 #
-$out_root/include/libfoo/
-{
-  $out_root/src/libfoo/lib{foo}: {hxx ixx txx}{** -version} hxx{version}
+pub = [dir_path] ../../include/libfoo/
 
-  # Include the generated version header into the distribution (so that we
-  # don't pick up an installed one) and don't remove it when cleaning (so that
-  # clean results in a state identical to distributed).
-  #
-  hxx{version}: in{version} $src_root/manifest
-  {
-    dist  = true
-    clean = ($src_root != $out_root)
-  }
+include $pub
 
-  # Install public headers into the libfoo/ subdirectory of, say, /usr/include/
-  # recreating subdirectories.
-  #
-  {hxx ixx txx}{*}:
-  {
-    install         = include/libfoo/
-    install.subdirs = true
-  }
-}
+lib{foo}: $pub/{$($pub/pub_hdrs)}
 
-# Private headers and sources.
+# Private headers and sources as well as dependencies.
 #
-lib{foo}: {hxx ixx txx cxx}{** -config} hxx{config} \
-          $imp_libs $int_libs
+lib{foo}: {hxx ixx txx cxx}{** -config} hxx{config} $imp_libs $int_libs
 
 hxx{config}: in{config}
 {

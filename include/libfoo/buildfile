@@ -1,0 +1,22 @@
+pub_hdrs = {hxx ixx txx}{** -version} hxx{version}
+
+./: $pub_hdrs
+
+# Include the generated version header into the distribution (so that we don't
+# pick up an installed one) and don't remove it when cleaning (so that clean
+# results in a state identical to distributed).
+#
+hxx{version}: in{version} $src_root/manifest
+{
+  dist  = true
+  clean = ($src_root != $out_root)
+}
+
+# Install public headers into the libfoo/ subdirectory of, say, /usr/include/
+# recreating subdirectories.
+#
+{hxx ixx txx}{*}:
+{
+  install         = include/libfoo/
+  install.subdirs = true
+}
