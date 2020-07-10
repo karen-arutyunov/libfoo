@@ -1,3 +1,5 @@
-# Generated config header.
+# Unit test executables and Testscript output directories
+# (can be symlinks).
 #
-config.hxx
+*.test
+test-*.test
