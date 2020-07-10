@@ -17,7 +17,7 @@ for t: cxx{**.test...}
   d = $directory($t)
   n = $name($t)...
 
-  ./: $d/exe{$n}: $t $d/{hxx ixx txx}{+$n} $d/testscript{+$n} $pub/lib{foo}
+  ./: $d/exe{$n}: $t $d/{hxx ixx txx}{**} $d/testscript{+$n} $pub/lib{foo}
 }
 
 # Build options.
