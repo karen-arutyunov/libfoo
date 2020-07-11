@@ -1,6 +1,6 @@
-int_libs = # Interface dependencies.
-imp_libs = # Implementation dependencies.
-#import imp_libs += libhello%lib{hello}
+intf_libs = # Interface dependencies.
+impl_libs = # Implementation dependencies.
+#import impl_libs += libhello%lib{hello}
 
 # Public headers.
 #
@@ -14,7 +14,7 @@ lib{foo}: $pub/{$pub_hdrs}
 
 # Private headers and sources as well as dependencies.
 #
-lib{foo}: {hxx ixx txx cxx}{** -config} hxx{config} $imp_libs $int_libs
+lib{foo}: {hxx ixx txx cxx}{** -config} hxx{config} $impl_libs $intf_libs
 
 hxx{config}: in{config}
 {
@@ -23,13 +23,18 @@ hxx{config}: in{config}
 
 # Build options.
 #
-out_inc = [dir_path] $out_root/include/
-src_inc = [dir_path] $src_root/include/
-out_src = [dir_path] $out_root/src/
-src_src = [dir_path] $src_root/src/
+out_pfx_inc = [dir_path] $out_root/include/
+src_pfx_inc = [dir_path] $src_root/include/
+out_pfx_src = [dir_path] $out_root/src/
+src_pfx_src = [dir_path] $src_root/src/
 
-cxx.poptions =+ "-I$out_src" "-I$src_src" \
-                "-I$out_inc" "-I$src_inc"
+# For combined:
+#
+#out_pfx
+#src_pfx
+
+cxx.poptions =+ "-I$out_pfx_src" "-I$src_pfx_src" \
+                "-I$out_pfx_inc" "-I$src_pfx_inc"
 
 obja{*}: cxx.poptions += -DLIBFOO_STATIC_BUILD
 objs{*}: cxx.poptions += -DLIBFOO_SHARED_BUILD
@@ -38,8 +43,8 @@ objs{*}: cxx.poptions += -DLIBFOO_SHARED_BUILD
 #
 lib{foo}:
 {
-  cxx.export.poptions = "-I$out_inc" "-I$src_inc"
-  cxx.export.libs = $int_libs
+  cxx.export.poptions = "-I$out_pfx_inc" "-I$src_pfx_inc"
+  cxx.export.libs = $intf_libs
 }
 
 liba{foo}: cxx.export.poptions += -DLIBFOO_STATIC
